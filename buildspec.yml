@@ -1,0 +1,22 @@
+
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.2
+
+  pre_build:
+    commands:
+      - echo "Verificando version de PHP"
+      - php -v
+
+  build:
+    commands:
+      - echo "Validando sintaxis de la aplicacion"
+      - php -l Aplicacion/index.php
+      - echo "Validando sintaxis de las pruebas"
+      - php -l Tests/test_inventory.php
+      - echo "Ejecutando pruebas automatizadas"
+      - php Tests/test_inventory.php
+
