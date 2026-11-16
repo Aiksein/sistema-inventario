@@ -1,5 +1,6 @@
+
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Infraestructura inicial del sistema de inventario
+Description: Infraestructura segura del sistema de inventario
 
 Resources:
   InventarioBucket:
@@ -15,7 +16,29 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
+  PoliticaSeguridadBucket:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref InventarioBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenegarHTTP
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !GetAtt InventarioBucket.Arn
+              - !Sub '${InventarioBucket.Arn}/*'
+            Condition:
+              Bool:
+                aws:SecureTransport: 'false'
+
 Outputs:
   BucketName:
     Description: Nombre del bucket de inventario
     Value: !Ref InventarioBucket
+
+  BucketArn:
+    Description: ARN del bucket de inventario
+    Value: !GetAtt InventarioBucket.Arn
