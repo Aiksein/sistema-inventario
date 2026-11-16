@@ -1,0 +1,22 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Infraestructura inicial del sistema de inventario
+
+Resources:
+  InventarioBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+Outputs:
+  BucketName:
+    Description: Nombre del bucket de inventario
+    Value: !Ref InventarioBucket
